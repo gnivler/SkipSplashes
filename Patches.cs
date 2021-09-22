@@ -1,11 +1,14 @@
-using BBI.Unity.Game;
 using HarmonyLib;
 
-namespace NoSplashes
+namespace SkipSplashes
 {
     public static class Patches
     {
-        [HarmonyPatch(typeof(LaunchSplashScreenControlller), "Awake")]
-        public static void Postfix() => SceneLoader.Instance.LoadFrontEndScene();
+        [HarmonyPatch(typeof(IntroSplashPanel), "Start")]
+        // ReSharper disable once RedundantAssignment
+        public static void Prefix() => IntroSplashPanel.skipIntro = true;
+        
+        [HarmonyPatch(typeof(LegalSplashPanel), "Start")]
+        public static void Postfix() => IntroSplashPanel.skipIntro = false;
     }
 }
